@@ -1,6 +1,4 @@
 # Forza4
-
-## Descrizione
 Forza4 è una replica digitale del classico gioco da tavolo "Forza 4". Il gioco è progettato per essere giocato da due giocatori, alternando turni per inserire le proprie pedine nel tabellone. Lo scopo è allineare quattro pedine consecutive verticalmente, orizzontalmente o diagonalmente prima dell'avversario.
 
 Il gioco è stato scritto in C a scopo didattico per imparare system call relative a segnali, semafori,
@@ -62,7 +60,7 @@ Inserendo \* si sta indicando che si vuole giocare contro un bot che giocherà m
 ## Descrizione scelte progettuali
 Ora mi concentrerò a descrivere come ho sviluppato il codice, questa parte serve solo se si è interessati a capire il funzionamento, per eseguire il gioco basta seguire gli step precedenti
 ### Segnali
-![Elaborazione segnali](/home/alberto/Pictures/signalDia.pdf)
+![Elaborazione segnali](https://github.com/Onda02/Forza4IPC/blob/main/signalDia.pdf)
 ### Creazione e rimozione IPC
 Per generare chiavi IPC ho usato la system call ftok, mettendo come file di
 riferimento quello del server e inserendo un numero che incrementavo ogni volta

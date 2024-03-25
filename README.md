@@ -28,7 +28,7 @@ Il server va eseguito in questo modo:
 
  Dove:
 - Righe e colonne sono due interi e rappresentano la dimensione del campo da gioco che devono essere almeno 5*5 e sia le righe che le colonne devono essere più piccole di 100
-- Forma1 e forma2 sono due char e rappresentano le forme usate dai due giocatori, quindi se scriviamo X P per esempio, quando il giocatore 1 inserirà la mossa verrà stampato a schermo la X mentre quando farà la mossa il giocatore 2 verrà stampata a schermo la P.
+- Forma1 e forma2 sono due char e rappresentano le i gettoni usati dai due giocatori, quindi se scriviamo X P per esempio, quando il giocatore 1 inserirà la mossa verrà stampato a schermo la X mentre quando farà la mossa il giocatore 2 verrà stampata a schermo la P.
 
 Una volta eseguito il server aspetterà l'arrivo degli altri giocatori client.
 Il server farà da arbitro e quindi stabilirà dopo ogni mossa dei giocatori se uno dei due giocatori ha vinto o se è pareggio e segnalerà ai client il risultato della partita.
@@ -61,6 +61,8 @@ Inserendo \* si sta indicando che si vuole giocare contro un bot che giocherà m
 
 ## Descrizione scelte progettuali
 Ora mi concentrerò a descrivere come ho sviluppato il codice, questa parte serve solo se si è interessati a capire il funzionamento, per eseguire il gioco basta seguire gli step precedenti
+### Segnali
+![Elaborazione segnali](/home/alberto/Pictures/signalDia.pdf)
 ### Creazione e rimozione IPC
 Per generare chiavi IPC ho usato la system call ftok, mettendo come file di
 riferimento quello del server e inserendo un numero che incrementavo ogni volta
@@ -72,37 +74,15 @@ Quindi il server usa una funzione speciale che ha attivate le flag IPC_CREAT
 errore e termini il programma).
 La rimozione delle IPC viene fatta solo dal server
 ### Memoria condivisa
-- "struct setClient *client": memoria condivisa che ha come scopo prin-
-cipale quello di capire chi è il primo giocatore e chi il secondo, quindi di
-distinguere i due client.
-In sostanza il primo client che riuscirà a inserire i dati dentro questa
-struttura verrà considerato primo player.
-Questo è stato possibile grazie alla sincronizzazione tra i due client e tra
-il server tramit l’uso di semafori, perchè mentre il primo client inserisce i
-dati il secondo non può arrivare e inserire i suoi prima che il server non li
-abbia letti.
-- "Information *cinfo": memoria condivisa in cui vengono inserite infor-
-mazioni generali, nelle info verranno copiati i pid e i nomi client inseriti
-precedentemente nella setClient, e inoltre verrà messo anche il pid del
+- "struct setClient *client": memoria condivisa che ha come scopo principale quello di capire chi è il primo giocatore e chi il secondo, quindi di distinguere i due client. In sostanza il primo client che riuscirà a inserire i dati dentro questa struttura verrà considerato primo player. Questo è stato possibile grazie alla sincronizzazione tra i due client e tra il server tramit l’uso di semafori, perchè mentre il primo client inserisce i dati il secondo non può arrivare e inserire i suoi prima che il server non li abbia letti.
+- "Information *cinfo": memoria condivisa in cui vengono inserite informazioni generali, nelle info verranno copiati i pid e i nomi client inseriti precedentemente nella setClient, e inoltre verrà messo anche il pid del
 server, in modo che i client possano inviargli segnali.
-- "Shape *shape" vengono inserite le forme di gioco inserite come parame-
-tro, serviranno ai client in quanto quando faranno la mossa riempiranno
-la casella di gioco con la loro forma
-- "int *turn" in questa variabile il client che sta giocando scriverà che è il
-suo turno (0 per client 1 e 1 per client 2) cosi il server capisce chi ha fatto
-l’ultima mossa
-- "int *howMany": mi dice quanti client stanno giocando, inizializzata a 0
-dal server, se i client sono piu di due termina, oppure se un giocatore sta
-già giocando col bot non può esserci un altro giocatore e se viene inserito
-termina, oppure se c’è già un giocatore che aspetta non può essere inserito
-un giocatore che vuole il bot e termina.
-- "int *timeRunOut": viene usata per una questione estetica, non ha scopi
-logici, in sostanza se il server nota che è scaduto il tempo, setta questa
-variabile a 1 e manda la kill di sconfitta a chi ha fatto scadere il tempo
-(e di vittoria all’altro) e settando questa variabile a 1 i client possono
-stampare a video il motivo della sconfitta (quindi per tempo scaduto)
-- "int *isRetired": anche questa ha solo scopi estetici, viene settata dal
-client e il server stampa a video chi si è ritirato (se si è ritirato qualcuno)
+- "Shape *shape" vengono inserite le forme di gioco inserite come parametro, serviranno ai client in quanto quando faranno la mossa riempiranno la casella di gioco con la loro forma
+- "int *turn" in questa variabile il client che sta giocando scriverà che è il suo turno (0 per client 1 e 1 per client 2) cosi il server capisce chi ha fatto l’ultima mossa
+- "int *howMany": mi dice quanti client stanno giocando, inizializzata a 0 dal server, se i client sono piu di due termina, oppure se un giocatore sta già giocando col bot non può esserci un altro giocatore e se viene inserito termina, oppure se c’è già un giocatore che aspetta non può essere inserito un giocatore che vuole il bot e termina.
+- "int *timeRunOut": viene usata per una questione estetica, non ha scopi logici, in sostanza se il server nota che è scaduto il tempo, setta questa variabile a 1 e manda la kill di sconfitta a chi ha fatto scadere il tempo
+(e di vittoria all’altro) e settando questa variabile a 1 i client possono stampare a video il motivo della sconfitta (quindi per tempo scaduto)
+- "int *isRetired": anche questa ha solo scopi estetici, viene settata dal client e il server stampa a video chi si è ritirato (se si è ritirato qualcuno)
 ### Semafori
 L’uso dei semafori si può distinguere in 3 categorie:
 - Distinguere i client: In questa fase bisogna distinguere chi è il primo

@@ -26,7 +26,7 @@ Il server va eseguito in questo modo:
 
  Dove:
 - Righe e colonne sono due interi e rappresentano la dimensione del campo da gioco che devono essere almeno 5*5 e sia le righe che le colonne devono essere più piccole di 100
-- Forma1 e forma2 sono due char e rappresentano le i gettoni usati dai due giocatori, quindi se scriviamo X P per esempio, quando il giocatore 1 inserirà la mossa verrà stampato a schermo la X mentre quando farà la mossa il giocatore 2 verrà stampata a schermo la P.
+- Forma1 e forma2 sono due char e rappresentano i gettoni usati dai due giocatori, quindi se scriviamo X P per esempio, quando il giocatore 1 inserirà la mossa verrà stampato a schermo la X mentre quando farà la mossa il giocatore 2 verrà stampata a schermo la P.
 
 Una volta eseguito il server aspetterà l'arrivo degli altri giocatori client.
 Il server farà da arbitro e quindi stabilirà dopo ogni mossa dei giocatori se uno dei due giocatori ha vinto o se è pareggio e segnalerà ai client il risultato della partita.

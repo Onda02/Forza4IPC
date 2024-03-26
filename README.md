@@ -7,7 +7,7 @@ memoria condivisa, gestione dei processi figli e exec e per imparare a fare inte
 
 
 ## Eseguire i programmi e come giocare
-Questo gioco sfrutta le sistem call SYSTEMV ed è in grado di funzionare solo in ambiente UNIX/LINUX.
+Questo gioco sfrutta le system call SYSTEMV ed è in grado di funzionare solo in ambiente UNIX/LINUX.
 Per giocare devi:
 1. Clonare il repository sul tuo computer.
 2. Spostarti dentro la cartella principale 'Forza4' e compilare col comando make.
